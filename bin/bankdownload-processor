@@ -127,7 +127,7 @@ def processfiles(srchpath,outpath,db,db_host,db_user,db_password):
     for f in changed_files:
         mydownload = BankDownload(os.path.join(srchpath,f))
         r=mydownload.load()
-        mydownload.printdata()
+        #mydownload.printdata()
 
         if r:
             print "\tLoad failed for: "+ srchpath+f
