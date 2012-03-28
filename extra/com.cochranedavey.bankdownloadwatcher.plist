@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.cochranedavey.bankdownloadwatcher</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/local/web/django/www/production/openportfolio/tools/newfiles</string>
+  </array>
+  <key>WatchPaths</key>
+  <array>
+    <string>/Volumes/ExtDisk2-2tb/Data/Dropbox/Cochrane Davey/Finances/Bank Downloads/Original Format/</string>
+  </array>
+  <key>StandardOutPath</key>
+  <string>/dev/null</string>
+</dict>
+</plist>

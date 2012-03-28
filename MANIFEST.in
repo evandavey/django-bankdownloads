@@ -1,0 +1,3 @@
+include *.txt *.md
+recursive-include bankdownloads *.py 
+recursive-include docs *.txt

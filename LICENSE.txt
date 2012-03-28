@@ -1,0 +1,11 @@
+#Legal Notice
+
+This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License][cc-nc-sa].
+
+![][img-cc-nc-sa]
+
+
+[cc-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/3.0/
+
+[img-cc-nc-sa]: http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png
+
