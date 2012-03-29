@@ -1,8 +1,16 @@
-#BankDownloadProcessor
+#django-bankdownloads
 
-* Set of tools to read in and standardise bank transaction downloads
+* django app to handle bank transaction downloads
 
-* Capable of reading csv or ofx files and converting to a clean and standardised format
+##Install
 
-* bankdowload-processor script compares checksums of new files to those stored in a database to allow automatic processing of new files
+1. Get the code
+
+	> git clone git://github.com/evandavey/django-bankdownloads.git django-bankdownloads
+	
+2. Install via pip
+
+	> pip install django-bankdownloads
+	
+3. Add 'bankdownloads' to INSTALLED_APPS
 
