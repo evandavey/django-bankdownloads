@@ -42,7 +42,9 @@
 * provides a 'BankDownload' class that can be reused in other applications
 
 	> mydownload = BankDownload()
+	
 	> mydownload.original_file=<file>
+	
 	> mydownload.save()
 	
 * access standardised data via the 'data' property
