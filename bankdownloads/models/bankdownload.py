@@ -7,12 +7,15 @@ import string
 from datetime import *
 import time
 from traceback import print_exc
+from django.db.models.signals import post_delete
 
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
 from bankdownloads.utils.ofx import *
+
+debug=False
 
 creditHeaders=['credit',
                'credit($)',
@@ -35,7 +38,7 @@ memoHeaders=['description',
 payeeHeaders=['Counterparty account',
 ]
 
-debug=True
+
 
 
 class OverwriteStorage(FileSystemStorage):
@@ -58,6 +61,7 @@ class BankDownload(models.Model):
     class Meta:
         app_label = "bankdownloads"
 
+    original_file_name=models.CharField(max_length=255,editable=False)
     original_file = models.FileField(upload_to='bankdownloads', storage=OverwriteStorage())
     upload_date = models.DateField(auto_now_add=True)
     updated_date = models.DateField(auto_now=True)
@@ -67,7 +71,7 @@ class BankDownload(models.Model):
     end_date = models.DateField(blank=True,null=True)
     bank_id=models.CharField(max_length=255,editable=False)
     account_id=models.CharField(max_length=255,editable=False)
-    _data=[]
+    mydata=[]
     
     def get_account_id(self):
         """
@@ -104,21 +108,21 @@ class BankDownload(models.Model):
         self.checksum=self.generate_checksum()
      
         super(BankDownload, self).save(*args, **kwargs) # Call the "real" save() method.
-            
+        
+        self.original_file_name=os.path.basename(self.original_file.name)    
         self.data
         super(BankDownload, self).save(*args, **kwargs) # Call the "real" save() method.
             
             
         #else display some kind of warning???
-        	
+    
+   	
 
     def generate_checksum(self):
         md5 = hashlib.md5()
-        md5.update(self.original_file.name)
         self.original_file.open(mode='rb') 
         for chunk in iter(lambda: self.original_file.read(128*md5.block_size), ''): 
             md5.update(chunk)
-        self.original_file.close()
         return md5.hexdigest()
 
 
@@ -130,6 +134,7 @@ class BankDownload(models.Model):
             
     @property
     def data(self):
+        self.mydata=[]
         extension = os.path.splitext(self.original_file.name)[1]
 
         if extension == ".ofx" or extension == ".qfx":
@@ -139,14 +144,14 @@ class BankDownload(models.Model):
                 self.account_id=self.get_account_id()
                 self.bank_id=self.get_bank_id()
               
-        self.records=len(self._data)
-        self.start_date=self.get_start_date(self._data)
-        self.end_date=self.get_end_date(self._data)
-        return self._data
+        self.records=len(self.mydata)
+        self.start_date=self.get_start_date(self.mydata)
+        self.end_date=self.get_end_date(self.mydata)
+        return self.mydata
         
     def load_csv(self):
         
-        self._data=[]
+        self.mydata=[]
         self.original_file.open()
         
         csvfile=self.original_file
@@ -265,7 +270,7 @@ class BankDownload(models.Model):
                    "fxrate":fxrate,
                 }
                 
-                self._data.append(d)
+                self.mydata.append(d)
         
         except csv.Error, e:
                 print('file %s, line %d: %s' % (filename, reader.line_num, e))
@@ -273,6 +278,7 @@ class BankDownload(models.Model):
         
     def load_ofx(self):
 
+        self.mydata=[]
         self.original_file.open()
         ofx = OfxParser.parse(self.original_file.file)
         self.original_file.seek(0)
@@ -317,7 +323,7 @@ class BankDownload(models.Model):
                    "fxrate":fxrate,
                 }
 
-                self._data.append(d)
+                self.mydata.append(d)
 
             return
         except:
@@ -345,7 +351,16 @@ class BankDownload(models.Model):
                 start_date=dt  
                 
         return start_date
-              
+ 
+def delete_filefield(sender, **kwargs):
+    """Automatically deleted files when records removed.
+    """
+    model = kwargs.get('instance')
+    model.original_file.delete(save=False)
+
+post_delete.connect(delete_filefield, BankDownload)
+
+             
 def cleanStr(str):
 
     valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
