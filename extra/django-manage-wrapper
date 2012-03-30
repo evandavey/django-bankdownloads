@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+
+"""
+Wrapper function to run the django manage.py command within a virtual environment
+
+"""
+
+import sys,os
+
+
+def usage():
+	return "Usage: %s <virtualenvpath> <siterootpath> <settings> <command>" % os.path.basename(sys.argv[0])
+
+if len(sys.argv)<5:
+	raise Exception(usage())
+
+
+virtualenvpath=sys.argv[1]
+siteroot=sys.argv[2]
+settings=sys.argv[3]
+cmd=sys.argv[4]
+
+if not os.path.exists(virtualenvpath): 
+    raise Exception("Virtual env path %s does not exist" % virtualenvpath)
+
+
+if not os.path.exists(siteroot): 
+    raise Exception("Site root path %s does not exist" % siteroot)
+
+
+virtualenv_command="source %s" % (os.path.join(virtualenvpath,'bin/activate'))
+siteroot_command="cd %s" % (os.path.join(siteroot))
+manage_command="./manage.py %s --settings=%s" % (cmd,settings)
+
+os.system(virtualenv_command)
+os.system(siteroot_command+";"+manage_command)

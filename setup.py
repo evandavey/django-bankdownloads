@@ -78,6 +78,7 @@ setup(
     platforms=["any"],
     license="CC-SA-NC",
     packages = packages,
+    scripts=['extra/django-manage-wrapper'],
     data_files = data_files,
     classifiers = ['Development Status :: 3 - Alpha',
                    'Environment :: Web Environment',
