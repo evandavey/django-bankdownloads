@@ -258,8 +258,8 @@ class BankDownload(models.Model):
                 
                
                 d={"transid":transid,
-                   #"bankid":self.bankid,
-                   #"accountid":self.accountid,
+                   "bankid":self.get_bank_id(),
+                   "accountid":self.get_account_id(),
                    "date":dt,
                    "payee":payee,
                    "memo":memo,
@@ -311,8 +311,8 @@ class BankDownload(models.Model):
 
 
                 d={"transid":transid,
-                   #"bankid":self.bankid,
-                   #"accountid":self.accountid,
+                   "bankid":bankid,
+                   "accountid":accid,
                    "date":dt,
                    "payee":payee,
                    "memo":memo,
@@ -351,6 +351,21 @@ class BankDownload(models.Model):
                 start_date=dt  
                 
         return start_date
+        
+    def export_ofx(self):
+        
+        import StringIO
+        data=self.data
+        
+        if data:
+            ofx = StringIO.StringIO()
+            ofxexport(ofx,data)
+            ofxstring=ofx.getvalue()
+            ofx.close()
+
+            return ofxstring
+            
+        return ""
  
 def delete_filefield(sender, **kwargs):
     """Automatically deleted files when records removed.

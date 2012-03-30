@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from bankdownloads.models import BankDownload
 
 class Command(BaseCommand):
-    args = 'import dir'
+    args = ''
     help = 'Processes and imports new bank downloads'
 
     def handle(self, *args, **options):
@@ -18,14 +18,25 @@ class Command(BaseCommand):
             srchpath = os.path.join('',srchpath)
         except AttributeError:
             raise CommandError('Please set BANKDOWNLOADS_IMPORT_PATH in settings')
+        
+        try:
+            outpath = settings.BANKDOWNLOADS_OUTPUT_PATH
+            outpath = os.path.join('',outpath)
+        except AttributeError:
+            raise CommandError('Please set BANKDOWNLOADS_OUTPUT_PATH in settings')
             
+        if not os.path.exists(srchpath): 
+            raise CommandError("Search path %s does not exist" % srchpath)
+
+        if not os.path.exists(outpath): 
+            raise CommandError("Output path %s does not exist" % outpath)
+      
         fileExtList=[".csv",".ofx",".qfx"]
 
 
         self.stdout.write("Searching: %s\n" % srchpath)
         
-        if not os.path.exists(srchpath): 
-            raise CommandError("Search path %s does not exist" % srchpath)
+      
 
                
 
@@ -58,6 +69,12 @@ class Command(BaseCommand):
                     if doUpdate:                     
                         try:
                             nb.save()
+                            try:
+                                ofx=open(os.path.join(outpath,os.path.splitext(f)[0]+'.ofx'),'w')
+                                ofx.write(nb.export_ofx())
+                                ofx.close()
+                            except:
+                                print 'Could not output ofx'
                         except:
                             print "Skipping %s" % f
                         fh.close()

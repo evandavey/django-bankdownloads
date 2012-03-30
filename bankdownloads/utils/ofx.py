@@ -4,7 +4,7 @@ from BeautifulSoup import BeautifulStoneSoup
 from datetime import datetime
 import time
 
-def ofxexport ( path, data):
+def ofxexport ( fh, data):
 
     accounts={}
     today = datetime.now().strftime('%Y%m%d')
@@ -35,7 +35,8 @@ def ofxexport ( path, data):
         
     # output
     
-    out=open(path,'w')
+    
+    out=fh
     
     out.write (
         """
@@ -116,7 +117,6 @@ def ofxexport ( path, data):
         )
         
     out.write ( "</STMTTRNRS></BANKMSGSRSV1></OFX>" )
-    out.close()
 
 class Ofx(object):
     pass
