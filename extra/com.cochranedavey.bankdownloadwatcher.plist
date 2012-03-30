@@ -6,11 +6,11 @@
   <string>com.cochranedavey.bankdownloadwatcher</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/usr/local/web/django/www/production/openportfolio/tools/newfiles</string>
+    <string><path to django command here></string>
   </array>
   <key>WatchPaths</key>
   <array>
-    <string>/Volumes/ExtDisk2-2tb/Data/Dropbox/Cochrane Davey/Finances/Bank Downloads/Original Format/</string>
+    <string><bank download path></string>
   </array>
   <key>StandardOutPath</key>
   <string>/dev/null</string>
