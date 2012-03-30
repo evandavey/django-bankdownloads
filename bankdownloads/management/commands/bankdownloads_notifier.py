@@ -27,6 +27,7 @@ class Command(BaseCommand):
         print "Warning date is %s" % warning_date
         
         last_dates=[]
+        missing_found=False
         for b in banks:
             
             #get unique accounts
@@ -39,6 +40,7 @@ class Command(BaseCommand):
                     #find last data date
                     last_date=BankDownload.objects.filter(bank_id=b[0],account_id=a[0]).order_by('-end_date')[0]
                     if last_date.end_date is None or last_date.end_date<warning_date:
+                        missing_found=True
                         last_dates.append('**MISSING** %s - %s: %s'%(b[0].strip(),a[0].strip(),last_date.end_date))
                     else:
                         last_dates.append('%s - %s: %s'%(b[0].strip(),a[0].strip(),last_date.end_date))
@@ -50,8 +52,8 @@ class Command(BaseCommand):
         for d in last_dates:
             msg+=("\t%s\n" % (d))
         
-        print msg  
-        if toemails:
+        #print msg  
+        if toemails and missing_found:
             print 'Sending email'
             send_mail(subj, msg, settings.EMAIL_HOST_USER,toemails, fail_silently=False)
         
