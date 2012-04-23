@@ -116,9 +116,9 @@ class BankDownload(models.Model):
             
             
         #else display some kind of warning???
-    
     @property
-   	def currency(self):
+    
+    def currency(self):
    	    
    	    currencies={'GBP':['uk'],
    	    }
