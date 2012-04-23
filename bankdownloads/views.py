@@ -28,4 +28,4 @@ def index(request):
     ct={'table':table,
     }
 
-    return render_to_response('bankdownload_list.html',ct,context_instance=RequestContext(request))
+    return render_to_response('bankdownloads/bankdownload_list.html',ct,context_instance=RequestContext(request))
