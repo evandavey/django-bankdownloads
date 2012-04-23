@@ -17,6 +17,7 @@ from bankdownloads.utils.ofx import *
 
 debug=False
 
+default_currency='AUD'
 creditHeaders=['credit',
                'credit($)',
                'transaction amount',
@@ -116,7 +117,19 @@ class BankDownload(models.Model):
             
         #else display some kind of warning???
     
-   	
+    @property
+   	def currency(self):
+   	    
+   	    currencies={'GBP':['uk'],
+   	    }
+   	    
+   	    for c,search in currencies.iteritems():
+   	        for s in search:
+   	            if self.original_file.name.find(s) != -1:
+   	                return c
+   	    
+   	    return default_currency
+ 
 
     def generate_checksum(self):
         md5 = hashlib.md5()
@@ -174,12 +187,7 @@ class BankDownload(models.Model):
         reader = csv.DictReader(csvdata)
 
      
-        def filterPick(searchList,filter):
-            for l in searchList:
-                if filter(l):
-                    return l
-            
-            return None
+   
         
         creditRegex = re.compile('|'.join(creditHeaders),re.IGNORECASE).search
         memoRegex = re.compile('|'.join(memoHeaders),re.IGNORECASE).search
@@ -193,7 +201,7 @@ class BankDownload(models.Model):
         dateCol = filterPick(reader.fieldnames,dateRegex)
         payeeCol = filterPick(reader.fieldnames,payeeRegex)
         
-        curr='AUD'
+        curr=self.currency
         fxcurr=curr
         fxrate=1.0
         
@@ -383,7 +391,12 @@ def cleanStr(str):
 
     return str
 
-
+def filterPick(searchList,filter):
+   for l in searchList:
+       if filter(l):
+           return l
+       
+   return None
 
 def parseDate(dt):
 
