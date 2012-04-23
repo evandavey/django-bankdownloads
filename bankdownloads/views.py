@@ -15,7 +15,7 @@ class BankDownloadTable(tables.Table):
     
     class Meta:
         model = BankDownload
-        exclude = []
+        exclude = ['id','original_file','checksum','bank_id','account_id']
         
 
 @login_required(login_url='/accounts/login')   
