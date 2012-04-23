@@ -14,7 +14,7 @@ class BankDownloadTable(tables.Table):
     
     
     class Meta:
-        model = Recipe
+        model = BankDownload
         exclude = []
         
 
