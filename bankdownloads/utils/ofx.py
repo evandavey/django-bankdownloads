@@ -22,7 +22,7 @@ def ofxexport ( fh, data):
         trans=acct.setdefault('trans',[])
     
         tran = {}
-        tran['DTPOSTED']=row["date"].strftime('%Y%M%d')
+        tran['DTPOSTED']=row["date"].strftime('%Y%m%d')
         tran['TRNAMT']=row["value"]
         tran['FITID']=row["transid"]
         tran['PAYEE']=row["payee"]
