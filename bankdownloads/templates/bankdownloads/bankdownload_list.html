@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<table>
+	<thead>
+		<tr>
+			<th>File</th>
+			<th>Start Date</th>
+			<th>End Date</th>
+			<th>Records</th>
+			<th>Download</th>
+	
+		</tr>
+	</thead>
+	<tbody>
+{% for download in object_list %}
+		<tr>
+			<td>{{download.original_file_name}}</td>
+			
+			<td>{{download.start_date|date:'d-M-Y'}}</td>
+			<td>{{download.end_date|date:'d-M-Y'}}</td>
+			<td>{{download.records}}</td>
+			<td>csv | ofx</td>
+			
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}
+
+
+
+  
