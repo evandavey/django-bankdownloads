@@ -381,7 +381,7 @@ def delete_filefield(sender, **kwargs):
     model = kwargs.get('instance')
     model.original_file.delete(save=False)
 
-post_delete.connect(delete_filefield, BankDownload)
+#post_delete.connect(delete_filefield, BankDownload)
 
              
 def cleanStr(str):
