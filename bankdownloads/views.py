@@ -9,12 +9,9 @@ from bankdownloads.models import BankDownload
 
 class BankDownloadTable(tables.Table):
     
-    
-    
-    
     class Meta:
         model = BankDownload
-        exclude = ['id','original_file','checksum','bank_id','account_id','name']
+        exclude = ['id','original_file','checksum','bank_id','account_id']
         
 
 @login_required(login_url='/accounts/login')   
