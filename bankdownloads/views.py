@@ -1,5 +1,6 @@
 import django_tables2 as tables
 from django_tables2.utils import A  # alias for Accessor
+from django_tables2 import RequestConfig
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response,redirect
@@ -18,8 +19,7 @@ class BankDownloadTable(tables.Table):
 def index(request):
 
     table = BankDownloadTable(BankDownload.objects.all())
-    table.paginate(page=request.GET.get("page", 1))
-    table.order_by = request.GET.get("sort")
+    RequestConfig(request).configure(table)
 
     ct={'table':table,
     }
