@@ -10,7 +10,6 @@ from bankdownloads.models import BankDownload
 class BankDownloadTable(tables.Table):
     
     
-    name = tables.LinkColumn('bankdownload_detail', args=[A('pk')])
     
     
     class Meta:
