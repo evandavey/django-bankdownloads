@@ -87,7 +87,6 @@ setup(
     license="CC-SA-NC",
     packages = packages,
     scripts=['extra/django-manage-wrapper'],
-    install_requires=['django-tables2'],
     data_files = data_files,
     classifiers = ['Development Status :: 3 - Alpha',
                    'Environment :: Web Environment',
