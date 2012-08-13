@@ -68,6 +68,13 @@ if os.path.exists("README.md"):
 else:
     long_description = "See http://github.com/evandavey/django-bankdownloads"
 
+
+try:
+    REQUIREMENTS = open('requirements.txt').read()
+except:
+    REQUIREMENTS = None
+
+
 setup(
     name = 'django-bankdownloads',
     version=distmeta.__version__,
@@ -76,6 +83,7 @@ setup(
     author_email=distmeta.__contact__,
     url=distmeta.__homepage__,
     platforms=["any"],
+    install_requires=REQUIREMENTS,
     license="CC-SA-NC",
     packages = packages,
     scripts=['extra/django-manage-wrapper'],
