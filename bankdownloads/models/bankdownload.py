@@ -21,7 +21,8 @@ default_currency='AUD'
 creditHeaders=['credit',
                'credit($)',
                'transaction amount',
-                'operation amount'
+                'operation amount',
+                'value',
 ]
 
 debitHeaders=['debit',

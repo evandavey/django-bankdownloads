@@ -58,7 +58,7 @@ class Command(BaseCommand):
                      
                         if checksum==b.checksum:
                             doUpdate=False
-                            print "Skipping %s" % f
+                            print "OK - %(f)s - Checksums matched" % locals()
                         else:
                             doUpdate=True
                     except ObjectDoesNotExist:
@@ -73,10 +73,11 @@ class Command(BaseCommand):
                                 ofx=open(os.path.join(outpath,os.path.splitext(f)[0]+'.ofx'),'w')
                                 ofx.write(nb.export_ofx())
                                 ofx.close()
+                                print "OK - %s" % f
                             except:
-                                print 'Could not output ofx'
+                                print 'FAILED - %(f)s - Could not output ofx (but saved)' % locals()
                         except:
-                            print "Skipping %s" % f
+                            print 'FAILED - %(f)s - Unknown error, could not save' % locals()
                         fh.close()
                         
                         
