@@ -14,6 +14,7 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
 from bankdownloads.utils.ofx import *
+from bankdownloads.models import BankTransaction
 
 debug=False
 
@@ -112,7 +113,7 @@ class BankDownload(models.Model):
         super(BankDownload, self).save(*args, **kwargs) # Call the "real" save() method.
         
         self.original_file_name=os.path.basename(self.original_file.name)    
-        self.data
+        self.create_transactions()
         super(BankDownload, self).save(*args, **kwargs) # Call the "real" save() method.
             
             
@@ -131,6 +132,19 @@ class BankDownload(models.Model):
    	    
    	    return default_currency
  
+    def create_transactions(self):
+        
+        self.transaction_set.all().delete()
+        
+        for d in self.data:
+            t = BankTransaction()
+            t.date = d['date']
+            t.memo = d['memo']
+            t.transid = d['transid']
+            t.payee = d['payee']
+            t.value = d['value']
+            t.save()
+             
 
     def generate_checksum(self):
         md5 = hashlib.md5()
